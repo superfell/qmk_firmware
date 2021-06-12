@@ -21,15 +21,7 @@ typedef struct {
 
 // Tap dance enums
 enum {
-    X_HOLD,
-    V_HOLD,
-    C_HOLD,
-    S_HOLD,
-    W_HOLD,
-    T_HOLD,
-    N_HOLD,
-    O_HOLD,
-    SHFT,
+    TD_SHFT,
     SOME_OTHER_DANCE
 };
 
@@ -60,8 +52,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_QWERTY] = LAYOUT( \
   KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV, \
   KC_TAB,   KC_Q,   KC_W,    KC_F,    KC_P,    KC_G,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_MINS, \
-  KC_LCTRL, KC_A,   KC_R,  TD(S_HOLD),TD(T_HOLD),  KC_D,                 KC_H,  TD(N_HOLD),KC_E,    KC_I,   TD(O_HOLD), KC_QUOT, \
-  KC_LSFT,  KC_Z,   TD(X_HOLD),TD(C_HOLD),TD(V_HOLD),KC_B, KC_LBRC,KC_RBRC,KC_K,KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT, \
+  KC_LCTRL, KC_A,   KC_R,    KC_S,    KC_T,    KC_D,                     KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT, \
+  TD(TD_SHFT), KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,KC_RBRC,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
                         KC_LALT, KC_LGUI, MO(_LOWER), KC_SPC, KC_ENT, MO(_RAISE), KC_BSPC, KC_RGUI \
 ),
 /* LOWER
@@ -271,12 +263,13 @@ void x_reset(qk_tap_dance_state_t *state, void *user_data) {
         { .fn = {user_fn_on_each_tap, user_fn_on_dance_finished, user_fn_on_dance_reset}, .user_data = (void*)userdata, }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [X_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_X),
-    [C_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_C),
-    [V_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_V),
-    [S_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_S),
-    [W_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_W),
-    [T_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_T),
-    [N_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_N),
-    [O_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_O)
+      [TD_SHFT] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS)
+    // [X_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_X),
+    // [C_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_C),
+    // [V_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_V),
+    // [S_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_S),
+    // [W_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_W),
+    // [T_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_T),
+    // [N_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_N),
+    // [O_HOLD] = ACTION_TAP_DANCE_FN_ADVANCED_DT(NULL, x_finished, x_reset, KC_O)
 };
