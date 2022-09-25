@@ -43,7 +43,7 @@
 #    define PLOOPY_DRAGSCROLL_DPI 100 // Fixed-DPI Drag Scroll
 #endif
 #ifndef PLOOPY_DRAGSCROLL_MULTIPLIER
-#    define PLOOPY_DRAGSCROLL_MULTIPLIER 0.75 // Variable-DPI Drag Scroll
+#    define PLOOPY_DRAGSCROLL_MULTIPLIER 0.05 // Variable-DPI Drag Scroll
 #endif
 
 keyboard_config_t keyboard_config;
@@ -64,10 +64,11 @@ uint16_t lastMidClick      = 0;      // Stops scrollwheel from being read if it 
 uint8_t  OptLowPin         = OPT_ENC1;
 bool     debug_encoder     = false;
 bool     is_drag_scroll    = false;
+uint16_t drag_scroll_cnt   = 0;
 
 __attribute__((weak)) void process_wheel_user(report_mouse_t* mouse_report, int16_t h, int16_t v) {
-    mouse_report->h = h;
-    mouse_report->v = v;
+    // mouse_report->h = h;
+    // mouse_report->v = v;
 }
 
 __attribute__((weak)) void process_wheel(report_mouse_t* mouse_report) {
@@ -253,15 +254,20 @@ void pointing_device_task(void) {
     process_mouse(&mouse_report);
 
     if (is_drag_scroll) {
-        mouse_report.h = mouse_report.x;
-#ifdef PLOOPY_DRAGSCROLL_INVERT
-        // Invert vertical scroll direction
-        mouse_report.v = -mouse_report.y;
-#else
-        mouse_report.v = mouse_report.y;
-#endif
-        mouse_report.x = 0;
-        mouse_report.y = 0;
+        if (drag_scroll_cnt++ % 2 == 0) {
+            mouse_report.h = mouse_report.x;
+    #ifdef PLOOPY_DRAGSCROLL_INVERT
+            // Invert vertical scroll direction
+            mouse_report.v = -mouse_report.y;
+    #else
+            mouse_report.v = mouse_report.y;
+    #endif
+            xprintf("SC: x:%d, y: %d, v: %d, h: %d\n", mouse_report.x, mouse_report.y, mouse_report.v, mouse_report.h);
+            mouse_report.x = 0;
+            mouse_report.y = 0;
+        }
+    } else {
+        drag_scroll_cnt = 0;
     }
 
     pointing_device_set_report(mouse_report);
