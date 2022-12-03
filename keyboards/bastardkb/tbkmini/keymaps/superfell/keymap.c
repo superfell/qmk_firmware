@@ -4,14 +4,11 @@
 #include "keycodes.h"
 #include "process_records.h"
 
-#define RAISE MO(_RAISE)
-#define LOWER MO(_LOWER)
-
 /* Tap-Hold keycodes */
 #define KC_LOWER LT(_LOWER, KC_ENT) /* Tap for Enter, Hold for LOWER layer */
 #define KC_RAISE LT(_RAISE, KC_SPC) /* Tap for Space, Hold for RAISE layer */
 
-#define ONE_GRV LT(1,KC_GRAVE)
+#define ONE_GRV LT(1, KC_GRAVE)
 #define CTL_Z LCTL_T(KC_Z)
 #define ALT_SHFT LALT(KC_LSFT)
 #define ALT_MENU LALT_T(KC_MENU)
@@ -31,18 +28,30 @@
 
 /* Tap Dance keycodes */
 #if defined(TAP_DANCE_ENABLE)
-    #include "tap_dances.h"
-    #define KC_T_SFT T_SFT /* Single tap for Shift, Double tap for CAPS Lock */
+#    include "tap_dances.h"
+#    define KC_T_SFT T_SFT /* Single tap for Shift, Double tap for CAPS Lock */
 #else
-    #define KC_T_SFT KC_LSFT
+#    define KC_T_SFT KC_LSFT
 #endif
 
+// home row mods
+#define MOD_A LCTL_T(KC_A)
+#define MOD_R LALT_T(KC_R)
+#define MOD_S LGUI_T(KC_S)
+#define MOD_T LSFT_T(KC_T)
+
+#define MOD_N RSFT_T(KC_N)
+#define MOD_E RGUI_T(KC_E)
+#define MOD_I LALT_T(KC_I)
+#define MOD_O RCTL_T(KC_O)
+
+// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.       ,-----------------------------------------------------.
          KC_TAB,    TD_Q,    KC_W,    KC_F,    KC_P,    KC_B,            KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, KC_BSLS,
     //|--------+--------+--------+--------+--------+--------|       |--------+--------+--------+--------+--------+--------|
-        KC_BSPC,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,            KC_M,    KC_N,    KC_E,    KC_I,    KC_O, KC_QUOT,
+        KC_BSPC, MOD_A,   MOD_R,   MOD_S,   MOD_T,    KC_G,            KC_M,   MOD_N,   MOD_E,   MOD_I,   MOD_O,   KC_QUOT,
     //|--------+--------+--------+--------+--------+--------|       |--------+--------+--------+--------+--------+--------|
           T_SFT,    TD_Z,    TD_X,    TD_C,    KC_D,    TD_V,            KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
     //|--------+--------+--------+--------+--------+--------|       |--------+--------+--------+--------+--------+--------|
@@ -86,12 +95,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                            `-------------------------'       `--------------------------'
     )
 };
-
+// clang-format on
 
 void keyboard_post_init_user(void) {
-  // Customise these values to desired behaviour
-  //debug_enable=true;
-  //debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
+    // Customise these values to desired behaviour
+    // debug_enable=true;
+    // debug_matrix=true;
+    // debug_keyboard=true;
+    // debug_mouse=true;
 }
